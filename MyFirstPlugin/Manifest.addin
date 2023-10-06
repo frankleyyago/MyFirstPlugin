@@ -3,12 +3,23 @@
 	<AddIn Type="Command">
 		<Name>MyFirstPlugin</Name>
 		<Assembly>MyFirstPlugin.dll</Assembly>
+		<AddInId>D6EB0540-D16A-4059-96B6-A3D611C74526</AddInId>
+		<FullClassName>MyFirstPlugin.HelloWorld</FullClassName>
+		<Text>HelloWorld</Text>
+		<Description>Show a dialog window when select an element</Description>
+		<VendorId>Yago</VendorId>
+		<VendorDescription>github.com/frankleyyago</VendorDescription>
+		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
+	</AddIn>
+	<AddIn Type="Command">
+		<Name>MyFirstPlugin</Name>
+		<Assembly>MyFirstPlugin.dll</Assembly>
 		<AddInId>1E707DD8-6BB8-4455-971F-A87BF30DB972</AddInId>
 		<FullClassName>MyFirstPlugin.PlaceGroup</FullClassName>
-		<Text>MyFirstPlugin</Text>
+		<Text>PlaceGroup</Text>
 		<Description>Places the Group at Particular Point</Description>
 		<VendorId>Yago</VendorId>
 		<VendorDescription>github.com/frankleyyago</VendorDescription>
-		<VisibilityMode>AlwaysVisible</VisibilityMode>
-	</AddIn>
+		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
+	</AddIn>	
 </RevitAddIns>
