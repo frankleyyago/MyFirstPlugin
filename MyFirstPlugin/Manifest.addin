@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+	<AddIn Type="Command">
+		<Name>MyFirstPlugin</Name>
+		<Assembly>MyFirstPlugin.dll</Assembly>
+		<AddInId>1E707DD8-6BB8-4455-971F-A87BF30DB972</AddInId>
+		<FullClassName>MyFirstPlugin.PlaceGroup</FullClassName>
+		<Text>MyFirstPlugin</Text>
+		<Description>Places the Group at Particular Point</Description>
+		<VendorId>Yago</VendorId>
+		<VendorDescription>github.com/frankleyyago</VendorDescription>
+		<VisibilityMode>AlwaysVisible</VisibilityMode>
+	</AddIn>
+</RevitAddIns>
