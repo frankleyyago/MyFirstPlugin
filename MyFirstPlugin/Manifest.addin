@@ -21,5 +21,16 @@
 		<VendorId>Yago</VendorId>
 		<VendorDescription>github.com/frankleyyago</VendorDescription>
 		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
-	</AddIn>	
+	</AddIn>
+	<AddIn Type="Command">
+		<Name>MyFirstPlugin</Name>
+		<Assembly>MyFirstPlugin.dll</Assembly>
+		<AddInId>64626DDE-83CE-463F-8299-797505557B7A</AddInId>
+		<FullClassName>MyFirstPlugin.GetCoordinate</FullClassName>
+		<Text>GetCoordinate</Text>
+		<Description>Get the XYZ coordinate of a picked point</Description>
+		<VendorId>Yago</VendorId>
+		<VendorDescription>github.com/frankleyyago</VendorDescription>
+		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
+	</AddIn>
 </RevitAddIns>
