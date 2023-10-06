@@ -22,25 +22,36 @@ namespace MyFirstPlugin
             UIApplication uiapp = commandData.Application;
             Document doc = uiapp.ActiveUIDocument.Document;
 
-            //Define a reference object to accept the pick result
-            Reference pickedRef = null;
+            try
+            {
+                //Define a reference object to accept the pick result
+                Reference pickedRef = null;
 
-            //Pick a group
-            Selection sel = uiapp.ActiveUIDocument.Selection;
-            pickedRef = sel.PickObject(ObjectType.Element, "Please select a group");
-            Element elem = doc.GetElement(pickedRef);
-            Group group = elem as Group;
+                //Pick a group
+                Selection sel = uiapp.ActiveUIDocument.Selection;
+                pickedRef = sel.PickObject(ObjectType.Element, "Please select a group");
+                Element elem = doc.GetElement(pickedRef);
+                Group group = elem as Group;
 
-            //Pick point
-            XYZ point = sel.PickPoint("Please pick a point to place group");
+                //Pick point
+                XYZ point = sel.PickPoint("Please pick a point to place group");
 
-            //Place the group
-            Transaction tx = new Transaction(doc);
-            tx.Start("Lab");
-            doc.Create.PlaceGroup(point, group.GroupType);
-            tx.Commit();
+                //Place the group
+                Transaction tx = new Transaction(doc);
+                tx.Start("Lab");
+                doc.Create.PlaceGroup(point, group.GroupType);
+                tx.Commit();
 
-            return Result.Succeeded;
+                return Result.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                TaskDialog.Show("Fail", "Action canceled by user");
+
+                return Result.Failed;
+            }
+
+            
         }
     }
 }
