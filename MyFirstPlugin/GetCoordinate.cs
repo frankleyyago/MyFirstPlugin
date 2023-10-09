@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autodesk.Revit.ApplicationServices;
+﻿#region Namespaces
+using System;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
-using Autodesk.Revit.DB.Architecture;
+#endregion
 
 namespace MyFirstPlugin
 {
+    /// <summary>
+    /// Get the coordinate of a picked element
+    /// </summary>
     [Transaction(TransactionMode.ReadOnly)]
     internal class GetCoordinate : IExternalCommand
     {
