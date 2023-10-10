@@ -14,7 +14,7 @@ namespace MyFirstPlugin
     [Regeneration(RegenerationOption.Manual)]
 
     ///<summary>
-    /// Copy and paste a group of elements.
+    /// Copy and paste a group of elements to a selected room.
     /// </summary>
     public class PlaceGroup : IExternalCommand
     {
@@ -27,7 +27,7 @@ namespace MyFirstPlugin
 
             try
             {
-                //Define a reference
+                //Define a reference.
                 Reference pickedRef = null;
 
                 //Pick a group.
@@ -45,8 +45,14 @@ namespace MyFirstPlugin
 
                 //Get the room's center point.
                 XYZ sourceCenter = GetElementCenter(room);
-                
-                //Prompt the user to select a target room
+                string coords =
+                    $"X = {sourceCenter.X.ToString()}\r\n" +
+                    $"Y = {sourceCenter.Y.ToString()}\r\n" +
+                    $"Z= {sourceCenter.Z.ToString()}";
+
+                TaskDialog.Show("Source room center: ", coords);
+
+                //Prompt the user to select a target room.
                 RoomPickFilter roomPickFilter = new RoomPickFilter();
                 IList<Reference> rooms = sel.PickObjects(ObjectType.Element, roomPickFilter, "Select target rooms for duplicate furniture group");
 
@@ -68,8 +74,7 @@ namespace MyFirstPlugin
             {
                 message = ex.Message;
                 return Result.Failed;
-            }
-            
+            }            
         }
 
         #region GroupPickFilter
@@ -154,7 +159,11 @@ namespace MyFirstPlugin
         {
             public bool AllowElement(Element e)
             {
-                return (e.Category.Id.IntegerValue.Equals((int)BuiltInCategory.OST_Rooms));
+                if (e != null && e.Category != null)
+                {
+                    return (e.Category.Id.IntegerValue.Equals((int)BuiltInCategory.OST_Rooms));
+                }
+                return false;
             }
             public bool AllowReference(Reference r, XYZ p)
             {
@@ -176,7 +185,7 @@ namespace MyFirstPlugin
                 Room roomTarget = doc.GetElement(r) as Room;
                 if (roomTarget != null)
                 {
-                    XYZ roomCenter = GetElementCenter(roomTarget);
+                    XYZ roomCenter = GetRoomCenter(roomTarget);
                     Group group = doc.Create.PlaceGroup(roomCenter + offsetXY, gt);
                 }
             }

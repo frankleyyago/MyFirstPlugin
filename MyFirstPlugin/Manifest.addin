@@ -17,7 +17,7 @@
 		<AddInId>1E707DD8-6BB8-4455-971F-A87BF30DB972</AddInId>
 		<FullClassName>MyFirstPlugin.PlaceGroup</FullClassName>
 		<Text>PlaceGroup</Text>
-		<Description>Places the Group at Particular Point</Description>
+		<Description>Copy and paste a group to a selected room</Description>
 		<VendorId>Yago</VendorId>
 		<VendorDescription>github.com/frankleyyago</VendorDescription>
 		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
