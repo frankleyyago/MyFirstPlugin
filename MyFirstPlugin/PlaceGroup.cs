@@ -45,12 +45,6 @@ namespace MyFirstPlugin
 
                 //Get the room's center point.
                 XYZ sourceCenter = GetElementCenter(room);
-                string coords =
-                    $"X = {sourceCenter.X.ToString()}\r\n" +
-                    $"Y = {sourceCenter.Y.ToString()}\r\n" +
-                    $"Z= {sourceCenter.Z.ToString()}";
-
-                TaskDialog.Show("Source room center: ", coords);
 
                 //Prompt the user to select a target room.
                 RoomPickFilter roomPickFilter = new RoomPickFilter();
@@ -139,7 +133,7 @@ namespace MyFirstPlugin
         #region GetRoomCenter()
         ///<summary>
         ///Get the room center coordinate.
-        ///Z value is equal to the bottom of the room
+        ///Z value is equal to the bottom of the room.
         /// </summary>
         public XYZ GetRoomCenter(Room room)
         {
@@ -153,7 +147,7 @@ namespace MyFirstPlugin
 
         #region RoomPickFilter
         ///<summary>
-        ///Filter elements to allow only rooms
+        ///Filter elements to allow only rooms.
         /// </summary>
         public class RoomPickFilter : ISelectionFilter
         {
@@ -174,7 +168,7 @@ namespace MyFirstPlugin
 
         #region PlaceFurnitureInRoom()
         ///<summary>
-        ///Copy the selected group to the selected rooms
+        ///Copy the selected group to the selected rooms.
         /// </summary>
         public void PlaceFurnitureInRoom(Document doc, IList<Reference> rooms, XYZ sourceCenter, GroupType gt, XYZ groupOrigin)
         {
