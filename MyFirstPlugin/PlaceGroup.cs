@@ -1,5 +1,6 @@
 ﻿#region Namespaces
 using System;
+using System.Collections.Generic;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
@@ -26,41 +27,33 @@ namespace MyFirstPlugin
 
             try
             {
+                //Define a reference
+                Reference pickedRef = null;
 
                 //Pick a group.
                 Selection sel = uiapp.ActiveUIDocument.Selection;
                 GroupPickFilter selFilter = new GroupPickFilter();
-
-                Reference pickedRef = sel.PickObject(ObjectType.Element, selFilter, "Please select a group");
+                pickedRef = sel.PickObject(ObjectType.Element, selFilter, "Please select a group");
                 Element e = doc.GetElement(pickedRef);
                 Group group = e as Group;
 
                 //Get the group's center point.
                 XYZ origin = GetElementCenter(group);
 
-                //Get the that the picked group is located in.
+                //Get the room that the picked group is located in.
                 Room room = GetRoomOfGroup(doc, origin);
 
                 //Get the room's center point.
                 XYZ sourceCenter = GetElementCenter(room);
-                string coords =
-                    $"X = {sourceCenter.X.ToString()}\r\n" +
-                    $"Y = {sourceCenter.Y.ToString()}\r\n" +
-                    $"Z= {sourceCenter.Z.ToString()}";
-
-                TaskDialog.Show("Source room center: ", coords);
-
-                //Pick point.
-                //XYZ point = sel.PickPoint("Please pick a point to place group");
                 
-                //Place the group.
-                Transaction tx = new Transaction(doc);
-                tx.Start("Lab");
-                //doc.Create.PlaceGroup(point, group.GroupType);
+                //Prompt the user to select a target room
+                RoomPickFilter roomPickFilter = new RoomPickFilter();
+                IList<Reference> rooms = sel.PickObjects(ObjectType.Element, roomPickFilter, "Select target rooms for duplicate furniture group");
 
-                //Calculate the new group's position.
-                XYZ groupLocation = sourceCenter + new XYZ(20, 0, 0);
-                doc.Create.PlaceGroup(groupLocation, group.GroupType);
+                //Place furniture in each of the rooms.
+                Transaction tx = new Transaction(doc);
+                tx.Start("Lab");                
+                PlaceFurnitureInRoom(doc, rooms, sourceCenter, group.GroupType, origin);
                 tx.Commit();
 
                 return Result.Succeeded;
@@ -79,7 +72,7 @@ namespace MyFirstPlugin
             
         }
 
-        #region GroupPickFilter()
+        #region GroupPickFilter
         /// <summary>
         /// Filter the pick element to allow only groups to be picked/highlighted.
         /// </summary>
@@ -87,7 +80,11 @@ namespace MyFirstPlugin
         {
             public bool AllowElement(Element e)
             {
-                return (e.Category.Id.IntegerValue.Equals((int)BuiltInCategory.OST_IOSModelGroups));
+                if (e != null && e.Category != null)
+                {
+                    return (e.Category.Id.IntegerValue.Equals((int)BuiltInCategory.OST_IOSModelGroups));
+                }
+                return false;
             }
             public bool AllowReference(Reference r, XYZ p)
             {
@@ -146,6 +143,43 @@ namespace MyFirstPlugin
             XYZ roomCenter = new XYZ(boundCenter.X, boundCenter.Y, locPt.Point.Z);
 
             return roomCenter;
+        }
+        #endregion
+
+        #region RoomPickFilter
+        ///<summary>
+        ///Filter elements to allow only rooms
+        /// </summary>
+        public class RoomPickFilter : ISelectionFilter
+        {
+            public bool AllowElement(Element e)
+            {
+                return (e.Category.Id.IntegerValue.Equals((int)BuiltInCategory.OST_Rooms));
+            }
+            public bool AllowReference(Reference r, XYZ p)
+            {
+                return false;
+            }
+        }
+        #endregion
+
+        #region PlaceFurnitureInRoom()
+        ///<summary>
+        ///Copy the selected group to the selected rooms
+        /// </summary>
+        public void PlaceFurnitureInRoom(Document doc, IList<Reference> rooms, XYZ sourceCenter, GroupType gt, XYZ groupOrigin)
+        {
+            XYZ offset = groupOrigin - sourceCenter;
+            XYZ offsetXY = new XYZ(offset.X, offset.Y, 0);
+            foreach (Reference r in rooms)
+            {
+                Room roomTarget = doc.GetElement(r) as Room;
+                if (roomTarget != null)
+                {
+                    XYZ roomCenter = GetElementCenter(roomTarget);
+                    Group group = doc.Create.PlaceGroup(roomCenter + offsetXY, gt);
+                }
+            }
         }
         #endregion
     }
